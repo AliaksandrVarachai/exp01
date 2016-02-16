@@ -2,7 +2,7 @@ function LengthConverter() {
     LENGTH_CONVERSION_MAP = {
         "km": 1,
         "m": 1000,
-        "cm": 10000,
+        "cm": 100000,
         "mm": 1e-6,
         "mile": 0.621371,
         "yard": 1093.61,
@@ -11,9 +11,14 @@ function LengthConverter() {
         "nautical mile": 0.539957
     };
 
-    this.getUnitValues = function(unit) {
+    this.getUnitValue = function(unit) {
         return LENGTH_CONVERSION_MAP[unit];
-    }
+    };
+
+    this.getLengthOfMeasurement = function() {
+        return Object.keys(LENGTH_CONVERSION_MAP);
+    };
+
 }
 
 LengthConverter.prototype.isNumber = function(n) {
@@ -21,10 +26,13 @@ LengthConverter.prototype.isNumber = function(n) {
 };
 
 LengthConverter.prototype.convert = function(number, baseUnit) {
-    var resultHash = {};
+    var resultsHash = {};
     if (this.getUnitValue(baseUnit) && this.isNumber(number)) {
-
+        var unitsOfMeasurement = this.getLengthOfMeasurement();
+        for(var i = 0; i < unitsOfMeasurement.length; i++) {
+            var unit = unitsOfMeasurement[i];
+            resultsHash[unit] = this.getUnitValue(unit) * number / this.getUnitValue(baseUnit);
+        }
     }
-
-    return resultHash;
+    return resultsHash;
 };
